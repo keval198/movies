@@ -16,6 +16,7 @@ function App() {
       </Route>
       <Route exact path="/popular" component={Popular}/>
       <Route exact path="/top-rated" component={Toprated}/>
+      <Route exact path="/search" component={Searchpage}/>
       <Route exact path="/search/:searchquery" component={Searchpage}/>
       <Route exact path="/detail/:id" component={Moviedetail}/>
     </Switch>

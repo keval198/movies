@@ -26,7 +26,7 @@ export default function Toprated() {
         );
         setmovieCount(movies.length)
         setmoviesResult(moviesResultTemp)
-        if(!isLoding && movies.length == 0){
+        if(!isLoding && movies.length === 0){
             setmoviesResult(<div className='display-4 d-flex justify-content-md-center'>0 Results</div>)
         }
     }, [movies,isLoding])
@@ -49,7 +49,7 @@ export default function Toprated() {
             }
         </div>
         <div class="d-grid gap-2">
-        { movieCount==20 && pageNum < totalPageNum?
+        { movieCount === 20 && pageNum < totalPageNum?
                 <button type="button" className="btn btn-dark" style={{margin : '20px', height:'44px'}} onClick={()=> setpageNum(pageNum + 1)}>More</button>
                 :""
         }</div>
