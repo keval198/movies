@@ -51,7 +51,7 @@ export default function Popular() {
             }
         </div>
         <div class="d-grid gap-2">
-            { movieCount==20 && pageNum < totalPageNum?
+            { movieCount === 20 && pageNum < totalPageNum?
                 <button type="button" className="btn btn-dark" style={{margin : '20px', height:'44px'}} onClick={()=> setpageNum(pageNum + 1)}>More</button>
                 :""
         }
