@@ -23,7 +23,6 @@ export default function Moviedetail(props) {
     }, [id])
     useEffect(() => {
         if(genres){
-            let tempString = ""
             const temp = genres.map((item)=> item.name)
             setdisplaygenres(temp.toString())
         }
