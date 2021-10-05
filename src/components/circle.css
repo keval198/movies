@@ -1,0 +1,32 @@
+.circle{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-color: #00a7c2;
+    margin-right: 10px;
+}
+.rating{
+    text-align:center;
+    padding-top: 16px;
+}
+.score{
+    margin-left: -180px;
+    margin-top: 36px;
+}
+.overview{
+    /* margin-top: 10px;
+    position:absolute; */
+}
+.abcd{
+
+}
+.overviewdesc{
+    /* margin-top: 0px;
+    position: absolute; */
+}
+.fullcaste{
+    margin-top: 0px;
+}
+.container{
+    margin-top: 20px;
+}
