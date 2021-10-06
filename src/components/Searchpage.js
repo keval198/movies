@@ -1,10 +1,10 @@
 import React from 'react'
 import Moviecard from './Moviecard'
 import { useState,useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function Searchpage(props) {
     const {searchquery} = props.match.params
-    console.log(searchquery)
     const [movies, setmovies] = useState([])
     const [pageNum, setpageNum] = useState(1)
     const [moviesResult, setmoviesResult] = useState("")
@@ -12,22 +12,29 @@ export default function Searchpage(props) {
     const [totalPageNum, settotalPageNum] = useState(0)
     const [isLoding, setisLoding] = useState(true)
     const [moreButton, setmoreButton] = useState("")
+    const updateMovies = useDispatch()
+    const getMovies = useSelector(state => state.searchMovies)
 
-   
+
     useEffect(() => {
-    if(searchquery !== "" && searchquery !== null && typeof searchquery !== 'undefined'){
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=4f07a7cc8af7e84cb0d294a99bf2eacd&query=${searchquery}&page=${pageNum}&include_adult=false`)
-        .then((res) => res.json())
-        .then((result)=>{
-        setmovies(result.results)
-        settotalPageNum(result.total_pages)
-        setisLoding(false)
-        })
-    }else{
-        setmoviesResult(<div className='display-4 d-flex justify-content-md-center'>Enter Search Text</div>)
-        setisLoding(false)
-    }
-    }, [searchquery,pageNum])
+        if(searchquery !== "" && searchquery !== null && typeof searchquery !== 'undefined'){
+            updateMovies({type:"SEARCH_MOVIES", searchQuery: searchquery, pageNum:pageNum})
+        }else{
+            setmoviesResult(<div className='display-4 d-flex justify-content-md-center'>Enter Search Text</div>)
+            setisLoding(false)
+        }
+        }, [searchquery,pageNum])
+
+    useEffect(() => {
+        if(searchquery !== "" && searchquery !== null && typeof searchquery !== 'undefined'){
+            if(getMovies !== null){
+            setmovies(getMovies.results)
+            settotalPageNum(getMovies.total_pages)
+            setisLoding(false)
+            }
+        }
+    }, [getMovies])
+    
     
     useEffect(() => {
     if(searchquery !== "" && searchquery !== null && typeof searchquery !== 'undefined'){

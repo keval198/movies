@@ -2,6 +2,8 @@ import React from 'react'
 import circle from './circle.css'
 import Peoplecard from './Peoplecard'
 import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
 export default function Moviedetail(props) {
     const [details, setdetails] = useState([])
     const [genres, setgenres] = useState([])
@@ -9,24 +11,32 @@ export default function Moviedetail(props) {
     const [cast, setcast] = useState([])
     const [displayCast, setdisplayCast] = useState("")
     const [isLoading, setisLoading] = useState(true)
-    const {id} = props.match.params 
-
+    const {id} = props.match.params
+    const updateMovie = useDispatch()
+    const getMovie = useSelector(state => state.movieDetail)
 
     useEffect(() => {
-        fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=4f07a7cc8af7e84cb0d294a99bf2eacd`)
-        .then((res) => res.json())
-        .then((result)=>{
-            setdetails(result) 
-            setgenres(result.genres)
-            setisLoading(false)
-        })
+        updateMovie({type:"GET_MOVIE", id:id})
     }, [id])
+
+    useEffect(() => {
+        if(getMovie !== null){
+        setdetails(getMovie) 
+        setgenres(getMovie.genres)
+        setisLoading(false)
+        }
+        return () =>{
+            updateMovie({type: "CLEAR_MOVIE"})
+        }
+    }, [getMovie])
+
     useEffect(() => {
         if(genres){
             const temp = genres.map((item)=> item.name)
             setdisplaygenres(temp.toString())
         }
     },[genres])
+
     useEffect(() => {
         fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=4f07a7cc8af7e84cb0d294a99bf2eacd`)
         .then((res) => res.json())
@@ -34,6 +44,7 @@ export default function Moviedetail(props) {
             setcast(result.cast)
         })
     },[id])
+
     useEffect(() => {
         if(cast){
         const castResult = cast.map(

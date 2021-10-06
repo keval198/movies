@@ -1,6 +1,7 @@
 import React from 'react'
 import Moviecard from './Moviecard'
 import {useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function Toprated() {
     const [movies, setmovies] = useState([])
@@ -9,27 +10,35 @@ export default function Toprated() {
     const [isLoding, setisLoding] = useState(true)
     const [movieCount, setmovieCount] = useState(0)
     const [totalPageNum, settotalPageNum] = useState(0)
+    const updateMovies = useDispatch()
+    const getMovies = useSelector(state => state.topRatedMovies)
 
     useEffect(() => {
-        fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=4f07a7cc8af7e84cb0d294a99bf2eacd&language=en-US&page=${pageNum}`)
-        .then((res) => res.json())
-        .then((result)=>{
-            setmovies(result.results)
-            settotalPageNum(result.total_pages)
-            setisLoding(false)
-            })
-        }, [pageNum])
+        updateMovies({type:"UPDATE_TOPRATED_MOVIES", pageNum:pageNum})
+    }, [pageNum])
 
     useEffect(() => {
-        const moviesResultTemp = movies.map(
-            (obj)=><Moviecard id={obj.id} title={obj.title} image={obj.poster_path} releasedate={obj.release_date}/>
-        );
-        setmovieCount(movies.length)
-        setmoviesResult(moviesResultTemp)
-        if(!isLoding && movies.length === 0){
-            setmoviesResult(<div className='display-4 d-flex justify-content-md-center'>0 Results</div>)
+        if(getMovies !== null){
+        setmovies(getMovies.results)
+        settotalPageNum(getMovies.total_pages)
+        setisLoding(false)
         }
-    }, [movies,isLoding])
+    }, [getMovies])
+
+    useEffect(() => {
+        if(movies !== null){
+            const moviesResultTemp = movies.map(
+                (obj)=><Moviecard id={obj.id} title={obj.title} image={obj.poster_path} releasedate={obj.release_date}/>
+            );
+            setmovieCount(movies.length)
+            setmoviesResult(moviesResultTemp)
+         }
+            if(!isLoding && movies === null){
+                setmoviesResult(<div className='display-4 d-flex justify-content-md-center'>0 Results</div>)
+            }
+        }, [movies,isLoding])
+    
+        
 
     useEffect(() => {
         window.scrollTo(0, 0)

@@ -5,6 +5,7 @@ import Toprated from './components/Toprated';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Searchpage from './components/Searchpage';
 import Moviedetail from './components/Moviedetail';
+
 function App() {
   return (
     <>
